@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://079094mi:XwQfvcFpMw5HaESpWrPN@vichogent.be:40043/079094mi"
+}
+
+model Person {
+  id        Int      @id @default(autoincrement())
+  auth0Id   String   @unique  @db.VarChar(500)
+  firstName String
+  lastName  String
+  email     String   @unique
+  bookCollections bookCollection[]    
+}
+
+model bookCollection {
+  id Int @id @default(autoincrement())
+  title String
+  person Person @relation(fields: [personId], references: [id], onDelete:Cascade)
+  personId Int
+  books bookCollectionLinktable[]
+  imgLink String @default("https://st4.depositphotos.com/4631829/26886/v/1600/depositphotos_268869956-stock-illustration-stack-books-isolated-white-hand.jpg")
+  description String @default("list of books")
+}
+model bookCollectionLinktable {
+  id Int @id @default(autoincrement())
+  bookCollection bookCollection @relation(fields: [bookCollectionId], references: [id],onDelete:Cascade)
+  bookCollectionId Int
+  bookId String 
+  progress Int
+  review Int
+  isFavorite Boolean
+  isRead Boolean
+  title String
+  subtitle String
+  imgLink String
+  authors String
+  
+}
